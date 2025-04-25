@@ -24,7 +24,7 @@ import path from 'path';
 import { Client } from '@replit/object-storage';
 
 // Initialize object storage client
-const storage = new Client();
+const objectStorage = new Client();
 const DATA_DIR = '.data';
 
 // Create data directory if it doesn't exist
@@ -39,7 +39,7 @@ async function ensureDataDir() {
 // Helper to read/write JSON files
 async function readJsonFile(filename: string) {
   try {
-    const data = await storage.download_from_text(filename);
+    const data = await objectStorage.download_from_text(filename);
     return JSON.parse(data);
   } catch (err) {
     console.error(`Error reading ${filename}:`, err);
@@ -49,11 +49,11 @@ async function readJsonFile(filename: string) {
 
 async function writeJsonFile(filename: string, data: any) {
   try {
-    await storage.upload_from_text(filename, JSON.stringify(data, null, 2));
+    await objectStorage.upload_from_text(filename, JSON.stringify(data, null, 2));
     
     // Create backup
     const backupFilename = `backup_${filename}_${Date.now()}`;
-    await storage.upload_from_text(backupFilename, JSON.stringify(data, null, 2));
+    await objectStorage.upload_from_text(backupFilename, JSON.stringify(data, null, 2));
     
     // Update last backup time
     const webhookSettings = await readJsonFile('webhookSettings.json') || {};
