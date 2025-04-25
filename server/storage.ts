@@ -60,11 +60,35 @@ async function writeJsonFile(filename: string, data: any) {
     const backupPath = path.join(DATA_DIR, backupFilename);
     await fs.writeFile(backupPath, JSON.stringify(data, null, 2));
     
-    // Update last backup time
+    // Update last backup time and send webhook
     const webhookSettingsPath = path.join(DATA_DIR, 'webhookSettings.json');
     const webhookSettings = await readJsonFile('webhookSettings.json') || {};
-    webhookSettings.lastBackup = new Date().toISOString();
+    const backupTime = new Date().toISOString();
+    webhookSettings.lastBackup = backupTime;
     await fs.writeFile(webhookSettingsPath, JSON.stringify(webhookSettings, null, 2));
+    
+    // Send backup webhook
+    const { sendWebhookMessage } = require('./discord');
+    await sendWebhookMessage({
+      embeds: [{
+        title: "System Backup Complete",
+        description: `Backup created: ${filename}`,
+        color: 0x00FF00,
+        fields: [
+          {
+            name: "Backup Time",
+            value: backupTime,
+            inline: true
+          },
+          {
+            name: "Size",
+            value: `${(JSON.stringify(data).length / 1024).toFixed(2)} KB`,
+            inline: true
+          }
+        ],
+        timestamp: backupTime
+      }]
+    });
   } catch (err) {
     console.error(`Error writing ${filename}:`, err);
     throw err;
@@ -88,11 +112,16 @@ export class FileStorage implements IStorage {
     this.currentId = {};
     this.loadData();
     
-    // Setup automated backups every 5 minutes
+    // Setup automated backups and data reloading every 5 minutes
     setInterval(() => {
-      this.saveData().catch(err => {
-        console.error("Automated backup failed:", err);
-      });
+      Promise.all([
+        this.saveData().catch(err => {
+          console.error("Automated backup failed:", err);
+        }),
+        this.loadData().catch(err => {
+          console.error("Data reload failed:", err);
+        })
+      ]);
     }, 5 * 60 * 1000);
   }
 

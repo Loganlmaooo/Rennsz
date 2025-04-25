@@ -7,7 +7,7 @@ import Themes from "./Themes";
 import Logs from "./Logs";
 import { sendAdminActionLog } from "@/lib/discord";
 
-type AdminTab = "dashboard" | "announcements" | "streams" | "themes" | "logs";
+type AdminTab = "announcements" | "streams" | "themes" | "logs";
 
 export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState<AdminTab>("dashboard");
@@ -117,16 +117,7 @@ export default function AdminPanel() {
           
           <nav className="p-4">
             <ul className="space-y-2">
-              <li>
-                <button 
-                  onClick={() => handleTabChange("dashboard")}
-                  className={`w-full text-left py-2 px-3 rounded hover:bg-zinc-800 text-primary hover-gold ${
-                    activeTab === "dashboard" ? "nav-active bg-zinc-800" : ""
-                  }`}
-                >
-                  <i className="fas fa-tachometer-alt mr-2"></i> Dashboard
-                </button>
-              </li>
+              
               <li>
                 <button 
                   onClick={() => handleTabChange("announcements")}
@@ -181,7 +172,7 @@ export default function AdminPanel() {
         
         {/* Main Content */}
         <div className="flex-grow bg-zinc-950 p-4 md:p-6 overflow-y-auto">
-          {activeTab === "dashboard" && <Dashboard />}
+          
           {activeTab === "announcements" && <Announcements />}
           {activeTab === "streams" && <StreamSettings />}
           {activeTab === "themes" && <Themes />}
