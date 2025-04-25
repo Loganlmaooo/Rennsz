@@ -31,11 +31,11 @@ const sessionStore = new MemoryStoreSession({
 
 // Helper to require authentication
 function requireAuth(req: express.Request, res: express.Response, next: express.NextFunction) {
-  if (req.session.isAuthenticated) {
-    next();
-  } else {
+  if (!req.session.isAuthenticated || !req.session.username) {
     res.status(401).json({ message: "Unauthorized" });
+    return;
   }
+  next();
 }
 
 // Helper to log action

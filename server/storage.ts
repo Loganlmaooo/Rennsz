@@ -41,13 +41,29 @@ async function readJsonFile(filename: string) {
   try {
     const data = await storage.download_from_text(filename);
     return JSON.parse(data);
-  } catch {
+  } catch (err) {
+    console.error(`Error reading ${filename}:`, err);
     return null;
   }
 }
 
 async function writeJsonFile(filename: string, data: any) {
-  await storage.upload_from_text(filename, JSON.stringify(data, null, 2));
+  try {
+    await storage.upload_from_text(filename, JSON.stringify(data, null, 2));
+    
+    // Create backup
+    const backupFilename = `backup_${filename}_${Date.now()}`;
+    await storage.upload_from_text(backupFilename, JSON.stringify(data, null, 2));
+    
+    // Update last backup time
+    const webhookSettings = await readJsonFile('webhookSettings.json') || {};
+    webhookSettings.lastBackup = new Date().toISOString();
+    await storage.upload_from_text('webhookSettings.json', JSON.stringify(webhookSettings, null, 2));
+    
+  } catch (err) {
+    console.error(`Error writing ${filename}:`, err);
+    throw err;
+  }
 }
 
 // Storage implementation
@@ -66,6 +82,13 @@ export class FileStorage implements IStorage {
     this.logs = [];
     this.currentId = {};
     this.loadData();
+    
+    // Setup automated backups every 5 minutes
+    setInterval(() => {
+      this.saveData().catch(err => {
+        console.error("Automated backup failed:", err);
+      });
+    }, 5 * 60 * 1000);
   }
 
   private async loadData() {
