@@ -53,11 +53,45 @@ export function useAnimationOnScroll(options: AnimationOptions = {}) {
       right: "-translate-x-8",
     };
     
-    const animationClass = `transform ${isVisible ? "opacity-100" : "opacity-0"} ${
-      type === "slide" ? (isVisible ? "" : directionMap[direction]) : ""
-    } ${type === "scale" ? (isVisible ? "" : "scale-95") : ""} ${
-      type === "rotate" ? (isVisible ? "" : "rotate-3") : ""
-    } transition-all ${ease} duration-${duration} delay-${delay}`;
+    // Use fixed animation classes to avoid template string issues
+    let animationClass = `transform ${isVisible ? "opacity-100" : "opacity-0"}`;
+    
+    // Add appropriate transforms based on animation type
+    if (type === "slide" && !isVisible) {
+      animationClass += ` ${directionMap[direction]}`;
+    }
+    
+    if (type === "scale" && !isVisible) {
+      animationClass += " scale-95";
+    }
+    
+    if (type === "rotate" && !isVisible) {
+      animationClass += " rotate-3";
+    }
+    
+    // Add transition properties
+    animationClass += ` transition-all ${ease}`;
+    
+    // Use standard tailwind classes for duration and delay
+    if (duration === 600) {
+      animationClass += " duration-600";
+    } else {
+      animationClass += " duration-500";
+    }
+    
+    if (delay === 0) {
+      // No delay class needed
+    } else if (delay <= 100) {
+      animationClass += " delay-100";
+    } else if (delay <= 200) {
+      animationClass += " delay-200";
+    } else if (delay <= 300) {
+      animationClass += " delay-300";
+    } else if (delay <= 500) {
+      animationClass += " delay-500";
+    } else {
+      animationClass += " delay-700";
+    }
     
     return animationClass;
   };
