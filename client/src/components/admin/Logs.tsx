@@ -140,7 +140,11 @@ export default function Logs() {
   // Format timestamp
   const formatTimestamp = (timestamp: string) => {
     const date = new Date(timestamp);
-    return date.toLocaleString();
+    return date.toLocaleString('en-US', {
+      timeZone: 'America/New_York',
+      dateStyle: 'short',
+      timeStyle: 'medium'
+    });
   };
   
   return (
