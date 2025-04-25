@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useAnimationOnScroll } from "@/lib/animation";
+import { sendAnnouncementInteractionLog } from "@/lib/discord";
 
 interface Announcement {
   id: number;
@@ -39,18 +40,30 @@ function getCategoryIcon(category: string) {
 }
 
 export default function AnnouncementsSection() {
-  const { data: announcements = [], isLoading } = useQuery({
+  const { data: announcements = [], isLoading } = useQuery<Announcement[]>({
     queryKey: ['/api/announcements'],
     queryFn: async () => {
       const res = await apiRequest("GET", "/api/announcements");
       return res.json();
-    },
+    }
   });
+  
+  // Use useEffect to log announcement views after successful data fetch
+  useEffect(() => {
+    if (announcements && announcements.length > 0) {
+      sendAnnouncementInteractionLog("view", 0, "Announcements Section");
+    }
+  }, [announcements]);
   
   const pinnedAnnouncement = announcements.find((a: Announcement) => a.isPinned);
   const regularAnnouncements = announcements
     .filter((a: Announcement) => !a.isPinned)
     .slice(0, 3);
+    
+  // Function to handle clicking on an announcement
+  const handleAnnouncementClick = (announcement: Announcement) => {
+    sendAnnouncementInteractionLog("click", announcement.id, announcement.title);
+  };
   
   // Create all animation hooks upfront
   const headerAnimation = useAnimationOnScroll({
@@ -117,12 +130,21 @@ export default function AnnouncementsSection() {
           {pinnedAnnouncement && (
             <div 
               ref={pinnedAnimation.ref}
-              className={`glass-gold rounded-xl overflow-hidden col-span-full md:col-span-2 lg:col-span-3 hover-gold ${pinnedAnimation.animationClass}`}
+              className={`glass-gold rounded-xl overflow-hidden col-span-full md:col-span-2 lg:col-span-3 hover-gold ${pinnedAnimation.animationClass} cursor-pointer transition-transform transform-gpu hover:scale-[1.01]`}
+              onClick={() => handleAnnouncementClick(pinnedAnnouncement)}
+              role="button"
+              tabIndex={0}
+              aria-label={`Read announcement: ${pinnedAnnouncement.title}`}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  handleAnnouncementClick(pinnedAnnouncement);
+                }
+              }}
             >
-              <div className="p-6">
-                <div className="flex items-start justify-between mb-4">
+              <div className="p-4 md:p-6">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
                   <div>
-                    <div className="flex items-center">
+                    <div className="flex items-center flex-wrap">
                       <span className="text-primary mr-2">
                         <i className="fas fa-thumbtack"></i>
                       </span>
@@ -132,7 +154,7 @@ export default function AnnouncementsSection() {
                       Posted {formatDate(pinnedAnnouncement.createdAt)}
                     </p>
                   </div>
-                  <Badge className={getCategoryColor(pinnedAnnouncement.category)}>
+                  <Badge className={`${getCategoryColor(pinnedAnnouncement.category)} mt-1 sm:mt-0`}>
                     <i className={`fas fa-${getCategoryIcon(pinnedAnnouncement.category)} mr-1`}></i>
                     {pinnedAnnouncement.category}
                   </Badge>
@@ -152,21 +174,31 @@ export default function AnnouncementsSection() {
               <div 
                 key={announcement.id}
                 ref={announcementAnimation.ref}
-                className={`glass rounded-xl overflow-hidden hover-gold ${announcementAnimation.animationClass}`}
+                className={`glass rounded-xl overflow-hidden hover-gold ${announcementAnimation.animationClass} cursor-pointer transition-transform transform-gpu hover:scale-[1.01]`}
+                onClick={() => handleAnnouncementClick(announcement)}
+                role="button"
+                tabIndex={0}
+                aria-label={`Read announcement: ${announcement.title}`}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    handleAnnouncementClick(announcement);
+                  }
+                }}
               >
-                <div className="p-6">
-                  <div className="flex items-start justify-between mb-4">
+                <div className="p-4 md:p-6">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
                     <div>
                       <h3 className="text-lg font-bold">{announcement.title}</h3>
                       <p className="text-sm text-gray-400 mt-1">
                         {timeAgo(announcement.createdAt)}
                       </p>
                     </div>
-                    <Badge className={getCategoryColor(announcement.category)}>
+                    <Badge className={`${getCategoryColor(announcement.category)} mt-1 sm:mt-0 whitespace-nowrap`}>
+                      <i className={`fas fa-${getCategoryIcon(announcement.category)} mr-1 hidden sm:inline`}></i>
                       {announcement.category}
                     </Badge>
                   </div>
-                  <p className="text-gray-300">{announcement.content}</p>
+                  <p className="text-gray-300 line-clamp-3">{announcement.content}</p>
                 </div>
               </div>
             );
@@ -177,9 +209,14 @@ export default function AnnouncementsSection() {
           <div className="text-center mt-8 animate-fadeInUp" style={{ animationDelay: "500ms" }}>
             <Button
               variant="outline"
-              className="border-primary/50 text-primary hover:bg-primary/10"
+              className="border-primary/50 text-primary hover:bg-primary/10 px-4 py-2 h-auto"
+              onClick={() => {
+                sendAnnouncementInteractionLog("click", 0, "View All Announcements");
+              }}
             >
-              View All Announcements <i className="fas fa-arrow-right ml-2"></i>
+              <span className="flex items-center justify-center">
+                View All Announcements <i className="fas fa-arrow-right ml-2"></i>
+              </span>
             </Button>
           </div>
         )}

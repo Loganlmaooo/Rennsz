@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useAnimationOnScroll } from "@/lib/animation";
+import { sendSocialMediaInteractionLog } from "@/lib/discord";
 
 export default function SocialMediaSection() {
   const headerAnimation = useAnimationOnScroll({

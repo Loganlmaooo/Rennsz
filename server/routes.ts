@@ -486,7 +486,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // Discord webhook logging endpoint
+  // Discord webhook logging endpoint - public for client-side logging
   app.post("/api/discord/log", async (req, res) => {
     try {
       const { embeds } = req.body;
