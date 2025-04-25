@@ -179,7 +179,13 @@ export default function Dashboard() {
                     <span>
                       <i className={`fas fa-${item.icon} text-primary mr-2`}></i> {item.description}
                     </span>
-                    <span className="text-sm text-gray-400">{item.timestamp}</span>
+                    <span className="text-sm text-gray-400">
+                      {new Date(item.timestamp).toLocaleString('en-US', { 
+                        timeZone: 'America/New_York',
+                        dateStyle: 'short',
+                        timeStyle: 'short'
+                      })}
+                    </span>
                   </div>
                 </div>
               ))

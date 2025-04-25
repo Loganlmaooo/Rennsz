@@ -189,6 +189,7 @@ export default function AdminPanel() {
 
         {/* Main Content */}
         <div className="flex-grow bg-zinc-950 p-4 md:p-6 overflow-y-auto">
+          {activeTab === "dashboard" && <Dashboard />}
           {activeTab === "announcements" && <Announcements />}
           {activeTab === "streams" && <StreamSettings />}
           {activeTab === "themes" && <Themes />}
