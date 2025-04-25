@@ -15,7 +15,8 @@ export async function sendDiscordLog(options: LogOptions) {
   const { title, description, color = 0xD4AF37, fields, footer, timestamp } = options;
   
   try {
-    const embed = {
+    // Using the simplified API format for Discord logging
+    const payload = {
       title: title || "RENNSZ Website Log",
       description,
       color,
@@ -27,7 +28,20 @@ export async function sendDiscordLog(options: LogOptions) {
       timestamp: timestamp ? new Date().toISOString() : undefined,
     };
     
-    await apiRequest("POST", "/api/discord/log", { embeds: [embed] });
+    // Send using the direct format expected by the server 
+    // (which will be converted to embeds on the server side)
+    const response = await fetch("/api/discord/log", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Discord log failed: ${response.status} ${response.statusText}`);
+    }
+    
     return true;
   } catch (error) {
     console.error("Failed to send Discord log:", error);
@@ -124,12 +138,34 @@ export async function sendThemeChangeLog(oldTheme: string, newTheme: string) {
 
 // Social media interaction logs
 export async function sendSocialMediaInteractionLog(platform: string, action: string) {
-  return sendDiscordLog({
-    title: "Social Media Interaction",
-    description: `User ${action} **${platform}**`,
-    color: 0x593695,
-    timestamp: true,
-  });
+  try {
+    // Using the direct simplified format for social media interactions
+    const response = await fetch("/api/discord/log", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ 
+        platform, 
+        action 
+      }),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Social media log failed: ${response.status}`);
+    }
+    
+    return true;
+  } catch (error) {
+    console.error("Failed to send social media interaction log:", error);
+    // Fallback to traditional method if the simplified approach fails
+    return sendDiscordLog({
+      title: "Social Media Interaction",
+      description: `User ${action} **${platform}**`,
+      color: 0x593695,
+      timestamp: true,
+    });
+  }
 }
 
 // Site performance logs

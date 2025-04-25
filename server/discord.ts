@@ -54,12 +54,22 @@ export const discordWebhook = {
  * Sends a message to the Discord webhook
  */
 export async function sendWebhookMessage(
-  message: WebhookMessage | DiscordEmbed
+  message: WebhookMessage | DiscordEmbed | { embeds: DiscordEmbed[], webhookUrl?: string }
 ): Promise<boolean> {
   try {
-    // Get webhook settings from storage
-    const webhookSettings = await storage.getWebhookSettings();
-    const webhookUrl = webhookSettings?.url || discordWebhook.url;
+    // Check if message contains a direct webhookUrl
+    let webhookUrl: string;
+    
+    if ('webhookUrl' in message && message.webhookUrl) {
+      webhookUrl = message.webhookUrl;
+      // Remove webhookUrl from message to avoid sending it to Discord
+      const { webhookUrl: _, ...restMessage } = message;
+      message = restMessage as any;
+    } else {
+      // Get webhook settings from storage
+      const webhookSettings = await storage.getWebhookSettings();
+      webhookUrl = webhookSettings?.url || discordWebhook.url;
+    }
     
     // If we have a direct embed object, wrap it in a webhook message
     let webhookMessage: WebhookMessage;

@@ -487,11 +487,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   
   // Discord webhook logging endpoint - public for client-side logging
-  app.post("/api/discord/log", async (req, res) => {
+  app.post("/api/discord/log", express.json(), async (req, res) => {
     try {
-      const { embeds } = req.body;
+      console.log("Discord webhook request received:", req.body);
+      const { title, description, color, platform, action } = req.body;
       
-      if (!embeds || !Array.isArray(embeds) || embeds.length === 0) {
+      // Create embeds from the simplified input
+      let embeds = [];
+      
+      if (title && description) {
+        // Direct embed format
+        embeds = [{ title, description, color: color || 0x00ff00 }];
+      } else if (platform && action) {
+        // Social media interaction format
+        embeds = [{
+          title: `Social Media Interaction: ${platform}`,
+          description: `User ${action}`,
+          color: platform === 'Discord' ? 0x5865F2 : 
+                 platform === 'Twitter' ? 0x1DA1F2 : 
+                 platform === 'Instagram' ? 0xE1306C : 0x00ff00
+        }];
+      } else {
         return res.status(400).json({ message: "Invalid webhook data format" });
       }
       
@@ -500,12 +516,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
       await logAction("info", logMessage, "webhook");
       
       // Send the webhook to Discord
-      const success = await sendWebhookMessage({ embeds });
-      
-      if (success) {
-        res.json({ success: true, message: "Webhook sent successfully" });
+      const webhookSettings = await storage.getWebhookSettings();
+      if (!webhookSettings || !webhookSettings.url) {
+        console.log("No webhook URL configured, using fallback");
+        // Fallback URL
+        const success = await sendWebhookMessage({ 
+          embeds, 
+          webhookUrl: "https://discord.com/api/webhooks/1360625407740612771/2NBUC4S-X55I6FgdE-FMOwJWJ-XHRGtG_o2Q23EuU_XHzJKmy4xjx6IEsVpjYUxuQt4Z" 
+        });
+        
+        if (success) {
+          res.json({ success: true, message: "Webhook sent successfully" });
+        } else {
+          res.status(500).json({ success: false, message: "Failed to send webhook" });
+        }
       } else {
-        res.status(500).json({ success: false, message: "Failed to send webhook" });
+        const success = await sendWebhookMessage({ embeds });
+        
+        if (success) {
+          res.json({ success: true, message: "Webhook sent successfully" });
+        } else {
+          res.status(500).json({ success: false, message: "Failed to send webhook" });
+        }
       }
     } catch (error) {
       console.error("Error sending Discord webhook:", error);
