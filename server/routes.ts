@@ -486,6 +486,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
+  // Discord webhook logging endpoint
+  app.post("/api/discord/log", async (req, res) => {
+    try {
+      const { embeds } = req.body;
+      
+      if (!embeds || !Array.isArray(embeds) || embeds.length === 0) {
+        return res.status(400).json({ message: "Invalid webhook data format" });
+      }
+      
+      // Log the action to the system log first
+      const logMessage = embeds[0].title || "Discord webhook log";
+      await logAction("info", logMessage, "webhook");
+      
+      // Send the webhook to Discord
+      const success = await sendWebhookMessage({ embeds });
+      
+      if (success) {
+        res.json({ success: true, message: "Webhook sent successfully" });
+      } else {
+        res.status(500).json({ success: false, message: "Failed to send webhook" });
+      }
+    } catch (error) {
+      console.error("Error sending Discord webhook:", error);
+      await logAction("error", `Error sending Discord webhook: ${error}`, "api");
+      res.status(500).json({ message: "Failed to send webhook" });
+    }
+  });
+  
   // Admin stats and metrics
   app.get("/api/admin/stats", requireAuth, async (req, res) => {
     try {

@@ -35,6 +35,7 @@ export async function sendDiscordLog(options: LogOptions) {
   }
 }
 
+// Admin action logs
 export async function sendAdminLoginLog(username: string, success: boolean) {
   return sendDiscordLog({
     title: success ? "Admin Login Successful" : "Admin Login Failed",
@@ -53,6 +54,7 @@ export async function sendAdminActionLog(action: string, details: string) {
   });
 }
 
+// System logs
 export async function sendSystemLog(type: "info" | "warning" | "error", message: string) {
   const colorMap = {
     info: 0x0099FF,
@@ -68,6 +70,7 @@ export async function sendSystemLog(type: "info" | "warning" | "error", message:
   });
 }
 
+// Stream status logs
 export async function sendStreamStatusLog(channelName: string, status: "live" | "offline") {
   return sendDiscordLog({
     title: `Stream Status Update`,
@@ -77,6 +80,90 @@ export async function sendStreamStatusLog(channelName: string, status: "live" | 
   });
 }
 
+// User activity logs
+export async function sendUserActivityLog(activity: string, details: string = "") {
+  return sendDiscordLog({
+    title: "User Activity",
+    description: `**${activity}**${details ? `\n${details}` : ""}`,
+    color: 0x7289DA,
+    timestamp: true,
+  });
+}
+
+// Page navigation logs
+export async function sendPageViewLog(page: string, deviceInfo: string = "") {
+  return sendDiscordLog({
+    title: "Page View",
+    description: `User visited **${page}**`,
+    fields: deviceInfo ? [{ name: "Device Info", value: deviceInfo }] : undefined,
+    color: 0x43B581,
+    timestamp: true,
+  });
+}
+
+// Announcement interaction logs
+export async function sendAnnouncementInteractionLog(action: "view" | "click", announcementId: number, title: string) {
+  return sendDiscordLog({
+    title: "Announcement Interaction",
+    description: `User ${action === "view" ? "viewed" : "clicked"} announcement: **${title}**`,
+    fields: [{ name: "Announcement ID", value: `#${announcementId}` }],
+    color: 0xFAA61A,
+    timestamp: true,
+  });
+}
+
+// Theme change logs
+export async function sendThemeChangeLog(oldTheme: string, newTheme: string) {
+  return sendDiscordLog({
+    title: "Theme Changed",
+    description: `Theme changed from **${oldTheme}** to **${newTheme}**`,
+    color: 0xF04747,
+    timestamp: true,
+  });
+}
+
+// Social media interaction logs
+export async function sendSocialMediaInteractionLog(platform: string, action: string) {
+  return sendDiscordLog({
+    title: "Social Media Interaction",
+    description: `User ${action} **${platform}**`,
+    color: 0x593695,
+    timestamp: true,
+  });
+}
+
+// Site performance logs
+export async function sendPerformanceLog(metric: string, value: number, unit: string = "ms") {
+  return sendDiscordLog({
+    title: "Performance Metric",
+    description: `**${metric}**: ${value}${unit}`,
+    color: 0x747F8D,
+    timestamp: true,
+  });
+}
+
+// Error logs
+export async function sendErrorLog(errorType: string, message: string, stackTrace?: string) {
+  return sendDiscordLog({
+    title: "Error Occurred",
+    description: `**${errorType}**: ${message}`,
+    fields: stackTrace ? [{ name: "Stack Trace", value: stackTrace.substring(0, 1000) }] : undefined,
+    color: 0xF04747,
+    timestamp: true,
+  });
+}
+
+// Backup logs
+export async function sendBackupLog(status: "success" | "failure", details: string = "") {
+  return sendDiscordLog({
+    title: `Backup ${status === "success" ? "Successful" : "Failed"}`,
+    description: details || `Website backup ${status === "success" ? "completed successfully" : "failed"}`,
+    color: status === "success" ? 0x43B581 : 0xF04747,
+    timestamp: true,
+  });
+}
+
+// Test webhook
 export async function testDiscordWebhook() {
   return sendDiscordLog({
     title: "Webhook Test",

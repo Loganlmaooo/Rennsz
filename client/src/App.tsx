@@ -1,4 +1,4 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -7,8 +7,42 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useEffect } from "react";
+import { sendPageViewLog, sendErrorLog, sendPerformanceLog } from "@/lib/discord";
 
 function Router() {
+  const [location] = useLocation();
+  
+  useEffect(() => {
+    // Track page views with device info
+    const deviceInfo = `
+      Screen: ${window.innerWidth}x${window.innerHeight},
+      UA: ${navigator.userAgent.substring(0, 100)}
+    `;
+    
+    // Map path to page name for more readable logging
+    const pageName = location === "/" ? "Home Page" : location;
+    
+    // Send page view to Discord webhook
+    sendPageViewLog(pageName, deviceInfo);
+    
+    // Log performance data
+    const navigationEntry = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming;
+    if (navigationEntry) {
+      sendPerformanceLog("Page Load Time", Math.round(navigationEntry.loadEventEnd - navigationEntry.startTime));
+    }
+    
+    // Track any errors that occur on the page
+    const handleError = (event: ErrorEvent) => {
+      sendErrorLog("Client-side Error", event.message, event.error?.stack);
+    };
+    
+    window.addEventListener("error", handleError);
+    
+    return () => {
+      window.removeEventListener("error", handleError);
+    };
+  }, [location]);
+  
   return (
     <Switch>
       <Route path="/" component={Home} />
