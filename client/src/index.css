@@ -1,0 +1,326 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 20 14.3% 4.1%;
+  --muted: 60 4.8% 95.9%;
+  --muted-foreground: 25 5.3% 44.7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 14.3% 4.1%;
+  --card: 0 0% 100%;
+  --card-foreground: 20 14.3% 4.1%;
+  --border: 20 5.9% 90%;
+  --input: 20 5.9% 90%;
+  --primary: 207 90% 54%;
+  --primary-foreground: 211 100% 99%;
+  --secondary: 60 4.8% 95.9%;
+  --secondary-foreground: 24 9.8% 10%;
+  --accent: 60 4.8% 95.9%;
+  --accent-foreground: 24 9.8% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 60 9.1% 97.8%;
+  --ring: 20 14.3% 4.1%;
+  --radius: 0.5rem;
+  --sidebar-background: 0 0% 100%;
+  --sidebar-foreground: 20 14.3% 4.1%;
+  --sidebar-primary: 207 90% 54%;
+  --sidebar-primary-foreground: 211 100% 99%;
+  --sidebar-accent: 60 4.8% 95.9%;
+  --sidebar-accent-foreground: 24 9.8% 10%;
+  --sidebar-border: 20 5.9% 90%;
+  --sidebar-ring: 20 14.3% 4.1%;
+  --chart-1: 207 90% 54%;
+  --chart-2: 0 84.2% 60.2%;
+  --chart-3: 120 100% 30%;
+  --chart-4: 275 84% 60%;
+  --chart-5: 35 100% 55%;
+}
+
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --primary: 207 90% 54%;
+  --primary-foreground: 211 100% 99%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 240 4.9% 83.9%;
+  --radius: 0.5rem;
+  --sidebar-background: 240 10% 3.9%;
+  --sidebar-foreground: 0 0% 98%;
+  --sidebar-primary: 207 90% 54%;
+  --sidebar-primary-foreground: 211 100% 99%;
+  --sidebar-accent: 240 3.7% 15.9%;
+  --sidebar-accent-foreground: 0 0% 98%;
+  --sidebar-border: 240 3.7% 15.9%;
+  --sidebar-ring: 240 4.9% 83.9%;
+}
+
+/* Default Theme: Black and Gold */
+.theme-default {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --primary: 43 77% 50%;  /* Gold color */
+  --primary-foreground: 210 40% 98%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+  --accent: 43 77% 50%;  /* Gold color */
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 43 77% 50%;  /* Gold color */
+}
+
+/* Christmas Theme */
+.theme-christmas {
+  --background: 220 13% 18%;
+  --foreground: 0 0% 98%;
+  --muted: 220 13% 28%;
+  --muted-foreground: 210 40% 96.1%;
+  --popover: 220 13% 18%;
+  --popover-foreground: 0 0% 98%;
+  --card: 220 13% 18%;
+  --card-foreground: 0 0% 98%;
+  --border: 220 13% 28%;
+  --input: 220 13% 28%;
+  --primary: 0 75% 42%;  /* Christmas Red */
+  --primary-foreground: 210 40% 98%;
+  --secondary: 142 71% 45%;  /* Christmas Green */
+  --secondary-foreground: 210 40% 98%;
+  --accent: 43 77% 50%;  /* Gold */
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --ring: 0 75% 42%;
+}
+
+/* Halloween Theme */
+.theme-halloween {
+  --background: 280 13% 18%;
+  --foreground: 0 0% 98%;
+  --muted: 280 13% 28%;
+  --muted-foreground: 210 40% 96.1%;
+  --popover: 280 13% 18%;
+  --popover-foreground: 0 0% 98%;
+  --card: 280 13% 18%;
+  --card-foreground: 0 0% 98%;
+  --border: 280 13% 28%;
+  --input: 280 13% 28%;
+  --primary: 25 100% 50%;  /* Halloween Orange */
+  --primary-foreground: 210 40% 98%;
+  --secondary: 280 60% 30%;  /* Halloween Purple */
+  --secondary-foreground: 210 40% 98%;
+  --accent: 134 60% 30%;  /* Halloween Green */
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --ring: 25 100% 50%;
+}
+
+/* Valentine's Day Theme */
+.theme-valentines {
+  --background: 340 10% 15%;
+  --foreground: 0 0% 98%;
+  --muted: 340 10% 25%;
+  --muted-foreground: 210 40% 96.1%;
+  --popover: 340 10% 15%;
+  --popover-foreground: 0 0% 98%;
+  --card: 340 10% 15%;
+  --card-foreground: 0 0% 98%;
+  --border: 340 10% 25%;
+  --input: 340 10% 25%;
+  --primary: 340 82% 52%;  /* Valentine Pink */
+  --primary-foreground: 210 40% 98%;
+  --secondary: 0 54% 42%;  /* Valentine Red */
+  --secondary-foreground: 210 40% 98%;
+  --accent: 43 77% 50%;  /* Gold */
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --ring: 340 82% 52%;
+}
+
+/* New Year Theme */
+.theme-newyear {
+  --background: 220 13% 15%;
+  --foreground: 0 0% 98%;
+  --muted: 220 13% 25%;
+  --muted-foreground: 210 40% 96.1%;
+  --popover: 220 13% 15%;
+  --popover-foreground: 0 0% 98%;
+  --card: 220 13% 15%;
+  --card-foreground: 0 0% 98%;
+  --border: 220 13% 25%;
+  --input: 220 13% 25%;
+  --primary: 43 77% 50%;  /* Gold */
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 100% 50%;  /* Blue */
+  --secondary-foreground: 210 40% 98%;
+  --accent: 300 100% 50%;  /* Purple */
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --ring: 43 77% 50%;
+}
+
+/* St. Patrick's Day Theme */
+.theme-stpatrick {
+  --background: 120 5% 15%;
+  --foreground: 0 0% 98%;
+  --muted: 120 5% 25%;
+  --muted-foreground: 210 40% 96.1%;
+  --popover: 120 5% 15%;
+  --popover-foreground: 0 0% 98%;
+  --card: 120 5% 15%;
+  --card-foreground: 0 0% 98%;
+  --border: 120 5% 25%;
+  --input: 120 5% 25%;
+  --primary: 130 50% 42%;  /* St. Patrick's Green */
+  --primary-foreground: 210 40% 98%;
+  --secondary: 43 77% 50%;  /* Gold */
+  --secondary-foreground: 210 40% 98%;
+  --accent: 32 100% 50%;  /* Orange */
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --ring: 130 50% 42%;
+}
+
+/* Easter Theme */
+.theme-easter {
+  --background: 210 10% 15%;
+  --foreground: 0 0% 98%;
+  --muted: 210 10% 25%;
+  --muted-foreground: 210 40% 96.1%;
+  --popover: 210 10% 15%;
+  --popover-foreground: 0 0% 98%;
+  --card: 210 10% 15%;
+  --card-foreground: 0 0% 98%;
+  --border: 210 10% 25%;
+  --input: 210 10% 25%;
+  --primary: 300 70% 80%;  /* Easter Purple */
+  --primary-foreground: 210 40% 30%;
+  --secondary: 130 70% 70%;  /* Easter Green */
+  --secondary-foreground: 210 40% 30%;
+  --accent: 180 70% 70%;  /* Easter Blue */
+  --accent-foreground: 210 40% 30%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --ring: 300 70% 80%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    background-image: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: overlay;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-black/70 backdrop-blur-md border border-white/10 shadow-lg;
+  }
+  
+  .glass-gold {
+    @apply bg-black/70 backdrop-blur-md border border-primary/30 shadow-lg;
+  }
+  
+  .gold-gradient {
+    @apply bg-gradient-to-r from-primary via-yellow-400 to-primary bg-[length:200%_200%] animate-goldShimmer;
+  }
+  
+  .hover-gold {
+    @apply hover:shadow-[0_0_15px_rgba(212,175,55,0.7)] hover:-translate-y-0.5 transition-all duration-300;
+  }
+  
+  .nav-active {
+    @apply bg-gradient-to-r from-transparent via-primary/30 to-transparent;
+  }
+}
+
+@layer utilities {
+  @keyframes goldShimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  .animate-goldShimmer {
+    animation: goldShimmer 3s ease infinite;
+  }
+  
+  .animate-fadeIn {
+    animation: fadeIn 1s ease;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .animate-fadeInUp {
+    animation: fadeInUp 0.6s ease forwards;
+  }
+  
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .animate-fadeInLeft {
+    animation: fadeInLeft 0.6s ease forwards;
+  }
+  
+  @keyframes fadeInLeft {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  
+  .animate-fadeInRight {
+    animation: fadeInRight 0.6s ease forwards;
+  }
+  
+  @keyframes fadeInRight {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  
+  .animate-pulse-gold {
+    animation: pulseGold 2s infinite;
+  }
+  
+  @keyframes pulseGold {
+    0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+  }
+}
