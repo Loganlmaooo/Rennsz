@@ -23,6 +23,15 @@ export function formatTime(date: Date | string): string {
   });
 }
 
+export function formatToEST(date: Date | string): string {
+  const d = typeof date === "string" ? new Date(date) : date;
+  return d.toLocaleString('en-US', {
+    timeZone: 'America/New_York',
+    dateStyle: 'short',
+    timeStyle: 'medium'
+  });
+}
+
 export function timeAgo(date: Date | string): string {
   const d = typeof date === "string" ? new Date(date) : date;
   const now = new Date();

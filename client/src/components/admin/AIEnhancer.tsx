@@ -23,11 +23,19 @@ export default function AIEnhancer() {
 
     try {
       setIsLoading(true);
-      const response = await apiRequest("POST", "/api/admin/ai/enhance", { prompt });
+      const response = await apiRequest("POST", "/api/admin/ai/enhance", {
+        prompt,
+        context: {
+          codebase: "client",
+          type: "enhancement"
+        }
+      });
+      
+      const data = await response.json();
       
       toast({
         title: "Enhancement Complete",
-        description: "AI suggestions have been generated",
+        description: data.message || "AI suggestions have been generated",
         variant: "default",
       });
       

@@ -23,11 +23,16 @@ interface ActivityItem {
 }
 
 export default function Dashboard() {
-  const { data: stats = [], isLoading: statsLoading } = useQuery({
+  const { data: stats = {}, isLoading: statsLoading } = useQuery({
     queryKey: ['/api/admin/stats'],
     queryFn: async () => {
       const res = await apiRequest("GET", "/api/admin/stats");
-      return res.json();
+      const data = await res.json();
+      return {
+        viewers: data.currentViewers?.viewers || 0,
+        visits: data.visits || 0,
+        announcements: data.announcements || 0
+      };
     },
   });
   
