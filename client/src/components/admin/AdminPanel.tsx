@@ -34,8 +34,8 @@ export default function AdminPanel() {
   }, []);
   
   return (
-    <div className="fixed inset-0 z-50 overflow-auto bg-black/80 animate-fadeIn">
-      <div className="flex flex-col md:flex-row min-h-screen max-h-screen">
+    <div className="fixed inset-0 z-50 bg-black/80 animate-fadeIn">
+      <div className="flex flex-col md:flex-row h-screen overflow-hidden">
         {/* Mobile Header */}
         <div className="md:hidden bg-zinc-900 border-b border-primary/20 p-4">
           <div className="flex items-center justify-between">

@@ -39,7 +39,6 @@ export default function Header({ onAdminClick }: HeaderProps) {
           <nav className="hidden md:flex space-x-1 animate-fadeInRight">
             <a href="#hero" className="px-4 py-2 rounded-md text-white hover:text-primary transition-colors">Home</a>
             <a href="#announcements" className="px-4 py-2 rounded-md text-white hover:text-primary transition-colors">Announcements</a>
-            <a href="#streams" className="px-4 py-2 rounded-md text-white hover:text-primary transition-colors">Streams</a>
             <a href="#socials" className="px-4 py-2 rounded-md text-white hover:text-primary transition-colors">Social</a>
             <button 
               onClick={onAdminClick} 

@@ -10,7 +10,9 @@ export default function AnnouncementsSection() {
       try {
         const res = await apiRequest("GET", "/api/announcements");
         const data = await res.json();
-        setAnnouncements(data);
+        // Only show non-default announcements
+        const realAnnouncements = data.filter((a: Announcement) => !a.isDefault);
+        setAnnouncements(realAnnouncements);
       } catch (error) {
         console.error("Error fetching announcements:", error);
       }
