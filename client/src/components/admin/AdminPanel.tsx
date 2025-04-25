@@ -8,7 +8,7 @@ import Logs from "./Logs";
 import AIEnhancer from "./AIEnhancer"; // Added AIEnhancer component
 import { sendAdminActionLog } from "@/lib/discord";
 
-type AdminTab = "announcements" | "streams" | "themes" | "logs" | "ai-enhancement"; // Added ai-enhancement tab
+type AdminTab = "dashboard" | "announcements" | "streams" | "themes" | "logs" | "ai-enhancement";
 
 export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState<AdminTab>("dashboard");
