@@ -23,8 +23,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { Client } from '@replit/object-storage';
 
-// Initialize object storage client
-const objectStorage = new Client();
+// Initialize storage
 const DATA_DIR = '.data';
 
 // Create data directory if it doesn't exist
@@ -39,9 +38,13 @@ async function ensureDataDir() {
 // Helper to read/write JSON files
 async function readJsonFile(filename: string) {
   try {
-    const data = await objectStorage.download_from_text(filename);
+    const filePath = path.join(DATA_DIR, filename);
+    const data = await fs.readFile(filePath, 'utf-8');
     return JSON.parse(data);
   } catch (err) {
+    if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
+      return null;
+    }
     console.error(`Error reading ${filename}:`, err);
     return null;
   }
@@ -49,17 +52,19 @@ async function readJsonFile(filename: string) {
 
 async function writeJsonFile(filename: string, data: any) {
   try {
-    await objectStorage.upload_from_text(filename, JSON.stringify(data, null, 2));
+    const filePath = path.join(DATA_DIR, filename);
+    await fs.writeFile(filePath, JSON.stringify(data, null, 2));
     
     // Create backup
-    const backupFilename = `backup_${filename}_${Date.now()}`;
-    await objectStorage.upload_from_text(backupFilename, JSON.stringify(data, null, 2));
+    const backupFilename = `backup_${filename}_${Date.now()}.json`;
+    const backupPath = path.join(DATA_DIR, backupFilename);
+    await fs.writeFile(backupPath, JSON.stringify(data, null, 2));
     
     // Update last backup time
+    const webhookSettingsPath = path.join(DATA_DIR, 'webhookSettings.json');
     const webhookSettings = await readJsonFile('webhookSettings.json') || {};
     webhookSettings.lastBackup = new Date().toISOString();
-    await storage.upload_from_text('webhookSettings.json', JSON.stringify(webhookSettings, null, 2));
-    
+    await fs.writeFile(webhookSettingsPath, JSON.stringify(webhookSettings, null, 2));
   } catch (err) {
     console.error(`Error writing ${filename}:`, err);
     throw err;
