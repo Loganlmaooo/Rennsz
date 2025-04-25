@@ -201,7 +201,3 @@ export default function AdminPanel() {
   );
 }
 
-// Placeholder components -  replace with your actual implementations
-function AIEnhancer() {
-  return <div>AI Code Enhancement Feature will go here</div>;
-}
