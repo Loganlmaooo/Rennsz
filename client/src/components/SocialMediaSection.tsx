@@ -63,6 +63,7 @@ export default function SocialMediaSection() {
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-block px-4 py-2 rounded-md bg-[#5865F2] text-white font-bold hover:bg-opacity-90 transition"
+                onClick={() => sendSocialMediaInteractionLog("Discord", "clicked join button")}
               >
                 Join Discord
               </a>
@@ -91,6 +92,7 @@ export default function SocialMediaSection() {
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-block px-4 py-2 rounded-md bg-black border border-gray-700 text-white font-bold hover:bg-gray-900 transition"
+                  onClick={() => sendSocialMediaInteractionLog("Twitter", "clicked follow button")}
                 >
                   Follow @rennsz96
                 </a>
@@ -98,7 +100,8 @@ export default function SocialMediaSection() {
                   href="https://x.com/i/communities/1823168507401634218" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="inline-block px-4 py-2 ml-2 rounded-md bg-black border border-gray-700 text-white hover:bg-gray-900 transition text-sm"
+                  className="inline-block px-4 py-2 sm:ml-2 mt-2 sm:mt-0 rounded-md bg-black border border-gray-700 text-white hover:bg-gray-900 transition text-sm"
+                  onClick={() => sendSocialMediaInteractionLog("Twitter", "clicked join community button")}
                 >
                   Join Community
                 </a>
@@ -127,6 +130,7 @@ export default function SocialMediaSection() {
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-block px-4 py-2 rounded-md bg-gradient-to-br from-purple-500 via-pink-500 to-yellow-500 text-white font-bold hover:opacity-90 transition"
+                onClick={() => sendSocialMediaInteractionLog("Instagram", "clicked follow button")}
               >
                 Follow on Instagram
               </a>
@@ -164,7 +168,9 @@ export default function SocialMediaSection() {
                       href="https://x.com/rennsz96?s=21" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="text-gray-400 hover:text-blue-400"
+                      className="text-gray-400 hover:text-blue-400 p-2"
+                      onClick={() => sendSocialMediaInteractionLog("Twitter", "clicked post icon")}
+                      aria-label="View on Twitter"
                     >
                       <i className="fab fa-x-twitter"></i>
                     </a>
@@ -199,7 +205,9 @@ export default function SocialMediaSection() {
                       href="https://www.instagram.com/rennsz?igsh=MWhjYjg2ZDV4dHc0bw==" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="text-gray-400 hover:text-pink-400"
+                      className="text-gray-400 hover:text-pink-400 p-2"
+                      onClick={() => sendSocialMediaInteractionLog("Instagram", "clicked post icon")}
+                      aria-label="View on Instagram"
                     >
                       <i className="fab fa-instagram"></i>
                     </a>
@@ -227,7 +235,9 @@ export default function SocialMediaSection() {
                       href="https://discord.gg/hUTXCaSdKC" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="text-gray-400 hover:text-[#5865F2]"
+                      className="text-gray-400 hover:text-[#5865F2] p-2"
+                      onClick={() => sendSocialMediaInteractionLog("Discord", "clicked post icon")}
+                      aria-label="View on Discord"
                     >
                       <i className="fab fa-discord"></i>
                     </a>
