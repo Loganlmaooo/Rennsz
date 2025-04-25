@@ -91,12 +91,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use(
     session({
       secret: "RENNSZ-premium-website-secret",
-      resave: false,
-      saveUninitialized: false,
+      resave: true,
+      saveUninitialized: true,
       store: sessionStore,
       cookie: {
-        secure: process.env.NODE_ENV === "production",
+        secure: false,
+        httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
+        sameSite: 'lax'
       },
     })
   );
