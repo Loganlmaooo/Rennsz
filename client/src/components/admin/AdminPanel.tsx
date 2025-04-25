@@ -5,10 +5,11 @@ import Announcements from "./Announcements";
 import StreamSettings from "./StreamSettings";
 import Themes from "./Themes";
 import Logs from "./Logs";
-import AIEnhancer from "./AIEnhancer"; // Added AIEnhancer component
+import AIEnhancer from "./AIEnhancer";
+import SEOTools from "./SEOTools";
 import { sendAdminActionLog } from "@/lib/discord";
 
-type AdminTab = "dashboard" | "announcements" | "streams" | "themes" | "logs" | "ai-enhancement";
+type AdminTab = "dashboard" | "announcements" | "streams" | "themes" | "logs" | "ai-enhancement" | "seo";
 
 export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState<AdminTab>("dashboard");
@@ -167,12 +168,22 @@ export default function AdminPanel() {
               </li>
               <li>
                 <button 
-                  onClick={() => handleTabChange("ai-enhancement")} // Added AI Enhancement tab to sidebar
+                  onClick={() => handleTabChange("ai-enhancement")}
                   className={`w-full text-left py-2 px-3 rounded hover:bg-zinc-800 text-primary hover-gold ${
                     activeTab === "ai-enhancement" ? "nav-active bg-zinc-800" : ""
                   }`}
                 >
                   <i className="fas fa-robot mr-2"></i> AI Enhancement
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => handleTabChange("seo")}
+                  className={`w-full text-left py-2 px-3 rounded hover:bg-zinc-800 text-primary hover-gold ${
+                    activeTab === "seo" ? "nav-active bg-zinc-800" : ""
+                  }`}
+                >
+                  <i className="fas fa-search mr-2"></i> SEO Tools
                 </button>
               </li>
               <li className="pt-4 mt-4 border-t border-primary/20">
@@ -194,7 +205,8 @@ export default function AdminPanel() {
           {activeTab === "streams" && <StreamSettings />}
           {activeTab === "themes" && <Themes />}
           {activeTab === "logs" && <Logs />}
-          {activeTab === "ai-enhancement" && <AIEnhancer />} {/* Added AIEnhancer component */}
+          {activeTab === "ai-enhancement" && <AIEnhancer />}
+          {activeTab === "seo" && <SEOTools />}
         </div>
       </div>
     </div>
