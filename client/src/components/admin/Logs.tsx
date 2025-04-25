@@ -184,7 +184,7 @@ export default function Logs() {
           
           <div 
             ref={logContainerRef}
-            className="bg-zinc-900 font-mono text-sm p-4 rounded-lg h-64 overflow-y-auto"
+            className="bg-zinc-900 font-mono text-sm p-4 rounded-lg h-[calc(100vh-400px)] min-h-[300px] overflow-y-auto"
           >
             {logsLoading ? (
               <div className="h-full flex items-center justify-center">
