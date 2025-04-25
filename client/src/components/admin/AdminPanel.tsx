@@ -35,7 +35,7 @@ export default function AdminPanel() {
   
   return (
     <div className="fixed inset-0 z-50 overflow-auto bg-black/80 animate-fadeIn">
-      <div className="flex flex-col md:flex-row min-h-screen">
+      <div className="flex flex-col md:flex-row min-h-screen max-h-screen">
         {/* Mobile Header */}
         <div className="md:hidden bg-zinc-900 border-b border-primary/20 p-4">
           <div className="flex items-center justify-between">
@@ -59,7 +59,7 @@ export default function AdminPanel() {
           </div>
           
           {/* Mobile Tab Selector */}
-          <div className="mt-4 flex overflow-x-auto pb-2 hide-scrollbar">
+          <div className="mt-4 flex overflow-x-auto pb-2 hide-scrollbar px-4">
             <button 
               onClick={() => handleTabChange("dashboard")}
               className={`whitespace-nowrap flex-shrink-0 px-3 py-1 mr-2 rounded text-sm 
