@@ -71,7 +71,7 @@ export default function HeroSection() {
               )}
             </div>
             
-            <div className="p-4 flex justify-between items-center bg-black-800">
+            <div className="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center bg-black-800 gap-4">
               <div className="flex items-center">
                 <div className={cn(
                   "w-10 h-10 rounded-full overflow-hidden flex-shrink-0",
@@ -93,14 +93,14 @@ export default function HeroSection() {
                 </div>
               </div>
               
-              <div className="flex space-x-2">
+              <div className="flex w-full sm:w-auto space-x-2">
                 <a 
                   href={activeStreamer === "main" ? "https://www.twitch.tv/rennsz" : "https://www.twitch.tv/rennszino"} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="px-4 py-2 rounded-md bg-[#6441A4] text-white font-bold hover:bg-opacity-90 transition"
+                  className="flex-grow sm:flex-grow-0 text-center px-4 py-2 rounded-md bg-[#6441A4] text-white font-bold hover:bg-opacity-90 transition"
                 >
-                  <i className="fab fa-twitch mr-1"></i> Watch on Twitch
+                  <i className="fab fa-twitch mr-1"></i> <span className="hidden xs:inline">Watch on</span> Twitch
                 </a>
                 <button 
                   onClick={switchStream} 
